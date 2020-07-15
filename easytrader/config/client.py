@@ -12,6 +12,8 @@ def create(broker):
         return WK
     if broker == "htzq":
         return HTZQ
+    if broker == "dbzq":
+        return DBZQ
     raise NotImplementedError
 
 
@@ -134,6 +136,22 @@ class GJ(CommonConfig):
     }
 
     AUTO_IPO_MENU_PATH = ["新股申购", "新股批量申购"]
+
+
+class DBZQ(CommonConfig):
+    DEFAULT_EXE_PATH = "C:\\Program Files (x86)\\东北证券同花顺独立下单\\xiadan.exe"
+
+    GRID_DTYPE = {
+        "操作日期": str,
+        "委托编号": str,
+        "申请编号": str,
+        "合同编号": str,
+        "证券代码": str,
+        "股东代码": str,
+        "资金帐号": str,
+        "资金帐户": str,
+        "发生日期": str,
+    }
 
 
 class WK(HT):
