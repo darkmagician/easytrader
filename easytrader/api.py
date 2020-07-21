@@ -63,6 +63,11 @@ def use(broker, debug=False, **kwargs):
 
         return ClientTrader()
 
+    if broker.lower() in ["dbzq_client", "东北证券客户端"]:
+        from .dbzq_clienttrader import DBZQClientTrader
+
+        return DBZQClientTrader()
+        
     raise NotImplementedError
 
 

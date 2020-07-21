@@ -76,3 +76,4 @@ target/
 tmp/
 
 secrets/
+/config/*.json

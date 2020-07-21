@@ -1,0 +1,7 @@
+{
+"client": "dbzq_client",
+"user": "xxxx",
+"pass": "xxxx",
+"exe_path":"c:\xxxx",
+"event_storage":"./queues"
+}

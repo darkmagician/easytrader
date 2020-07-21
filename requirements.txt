@@ -28,4 +28,5 @@ requests
 six
 urllib3
 werkzeug
+watchdog
 
