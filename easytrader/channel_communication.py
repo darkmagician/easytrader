@@ -52,9 +52,12 @@ observer = None
 
 def startHandlers(handlers):
     from watchdog.observers import Observer
-    from watchdog.events import FileSystemEventHandler
+    from watchdog.events import PatternMatchingEventHandler
 
-    class QueueHandler(FileSystemEventHandler):
+    class QueueHandler(PatternMatchingEventHandler):
+        def __init__(self, patterns):
+            super().__init__(patterns=patterns, ignore_directories=True)
+
         def on_created(self, event):
             fname = event.src_path
             time.sleep(1)
@@ -84,7 +87,7 @@ def startHandlers(handlers):
     eventPath = os.path.join(rootDir, event_dir)
     if not os.path.exists(eventPath):
         os.makedirs(eventPath)
-    observer.schedule(event_handler, path=eventPath, recursive=False)
+    observer.schedule(event_handler, patterns=eventPath + "/*.json")
     observer.start()
     # observer.join()
 
