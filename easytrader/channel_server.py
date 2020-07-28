@@ -62,8 +62,8 @@ def onPortfolioEvent(client, data):
     return resp
 
 
-def run(client, root):
-    channel.initRoot(root)
+def run(client, cfg):
+    channel.initRoot(cfg['event_storage'])
     channel.startHandlers({'orders': lambda x: onOrderEvent(client, x),
                            'portfolio': lambda x: onPortfolioEvent(client, x)})
     try:

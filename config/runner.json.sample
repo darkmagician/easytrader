@@ -3,5 +3,12 @@
 "user": "xxxx",
 "pass": "xxxx",
 "exe_path":"c:\xxxx",
-"event_storage":"./queues"
+	"impl": "http",
+	"http": {
+		"port": 8888
+	},
+	"channel": {
+		"event_storage": "./queues"
+	}
+
 }

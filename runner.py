@@ -6,7 +6,7 @@ import logging.handlers
 import os
 import sys
 from collections import defaultdict
-import easytrader.agent as agent
+
 
 rootDir = os.path.abspath(os.path.dirname(__file__))
 logger = logging.getLogger(__name__)
@@ -39,8 +39,15 @@ def main():
     # print('balance: ' + str(client.balance))
     # time.sleep(10)
     # print('position: ' + str(client.position))
-
-    agent.run(client, cfg['event_storage'])
+    impl = cfg['impl']
+    if impl == 'channel':
+        import easytrader.channel_server as server
+        server.run(client, cfg['channel'])
+    elif impl == 'http':
+        import easytrader.http_server as server
+        server.run(client, cfg['http'])
+    else:
+        logger.error(f'Unknown Impl {impl}')
 
 
 if __name__ == '__main__':
