@@ -17,6 +17,7 @@ def onOrderEvent(client, data):
     else:
         logger.info(f'Selling {security} at {price} with amount {amount}')
         result = client.sell(security, price, amount)
+    logger.info(f'Order Result: {result}')
     entrust_no = result['entrust_no']
     for i in range(100):
         time.sleep(3)
@@ -24,7 +25,7 @@ def onOrderEvent(client, data):
         entrust = next((x for x in today_entrusts if x['合同编号'] == entrust_no), None)
         if entrust:
             if entrust['委托数量'] == entrust['成交数量']:
-                logger.info('entrust {entrust_no} is done for order {order_id}')
+                logger.info(f'entrust {entrust_no} is done for order {order_id}')
                 return {
                     'security': entrust['证券代码'],
                     'add_time': entrust['委托时间'],
