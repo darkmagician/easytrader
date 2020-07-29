@@ -5,7 +5,8 @@
 "exe_path":"c:\xxxx",
 	"impl": "http",
 	"http": {
-		"port": 8888
+		"port": 8888,
+		"enc_key":"abc"
 	},
 	"channel": {
 		"event_storage": "./queues"

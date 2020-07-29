@@ -89,7 +89,23 @@ class DBZQClientTrader(clienttrader.BaseLoginClientTrader):
             self.fixValue(['证券代码', '股东帐户'], record)
         return result
 
+    @property
+    def today_trades(self):
+        result = super().today_trades
+        for record in result:
+            self.fixValue(None, record)
+        return result
+
+    @property
+    def today_entrusts(self):
+        result = super().today_entrusts
+        for record in result:
+            self.fixValue(None, record)
+        return result
+
     def fixValue(self, keys, record):
+        if key is None:
+            key = record.keys()
         for k in keys:
             val = record[k]
             if val.startswith('="') and val.endswith('"'):
