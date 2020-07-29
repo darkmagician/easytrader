@@ -108,5 +108,5 @@ class DBZQClientTrader(clienttrader.BaseLoginClientTrader):
             keys = record.keys()
         for k in keys:
             val = record[k]
-            if val.startswith('="') and val.endswith('"'):
+            if type(val) == str and val.startswith('="') and val.endswith('"'):
                 record[k] = val[2:-1]
