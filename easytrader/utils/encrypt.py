@@ -12,18 +12,19 @@ def init_cipher(key):
     cipher = AES.new(key, AES.MODE_ECB)
 
 
+
 def encrypt(data):
     bs = AES.block_size
 
     def pad(s): return (s + (bs - len(s) % bs) * '\0').encode('utf-8')
     encrypt_data = cipher.encrypt(pad(data))
-    return base64.b64encode(encrypt_data)
+    return base64.b64encode(encrypt_data).decode('utf-8')
 
 
 def decrypt(encrypt_data):
-    result2 = base64.b64decode(encrypt_data)
+    result2 = base64.b64decode(encrypt_data.encode('utf-8','ignore'))
     decrypted = cipher.decrypt(result2)
-    #print(decrypted)
+   # print(decrypted)
     return decrypted.decode('utf-8','ignore').rstrip('\0')
 
 
