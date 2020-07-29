@@ -104,8 +104,8 @@ class DBZQClientTrader(clienttrader.BaseLoginClientTrader):
         return result
 
     def fixValue(self, keys, record):
-        if key is None:
-            key = record.keys()
+        if keys is None:
+            keys = record.keys()
         for k in keys:
             val = record[k]
             if val.startswith('="') and val.endswith('"'):

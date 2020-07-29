@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request
 from .utils import encrypt
 from . import api
 from .log import logger
-
+import json
 
 app = Flask(__name__)
 
@@ -112,12 +112,14 @@ def onRequest(req_body):
     global txIdSeq
     if txIdSeq >= 0:
         val = encrypt.decrypt(req_body['payload'])
+       # print(val)
+        val = json.loads(val)
         ops = val['operation']
         if ops == 'txId':
             return val
         txId = val['txId']
-        if txId > txIdSeq and txId + 16 < txIdSeq:
-            txIdSeq = txIdSeq + 1
+        if txId > txIdSeq and txId < txIdSeq + 16:
+            txIdSeq = txId
         else:
             raise Exception("Out of TxId")
         return val
@@ -127,8 +129,8 @@ def onRequest(req_body):
 def onResponse(resp_body):
     global txIdSeq
     if txIdSeq >= 0:
-        val = encrypt.encrypt(resp_body)
-        return jsonify({'payload': val})
+        val = encrypt.encrypt(json.dumps(resp_body))
+        return {'payload': val}
     return resp_body
 
 
@@ -143,7 +145,7 @@ def handle_request():
         logger.info(f'{ops} <- {request_data}')
         resp_data = operation_handlers[ops](request_data)
         logger.info(f'{ops} -> {resp_data}')
-        return onResponse(jsonify({'result': 'success', 'data': resp_data})), 200
+        return jsonify(onResponse({'result': 'success', 'data': resp_data})), 200
     logger.info(f'Unknown Operation {ops}')
     return jsonify({"error": 'Unknown Operation'}), 404
 
