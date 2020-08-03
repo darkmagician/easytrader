@@ -11,12 +11,12 @@ from easytrader import clienttrader
 from easytrader.utils.captcha import recognize_verify_code
 
 
-class DBZQClientTrader(clienttrader.BaseLoginClientTrader):
+class StandaloneClientTrader(clienttrader.BaseLoginClientTrader):
     grid_strategy = grid_strategies.Xls
 
     @property
     def broker_type(self):
-        return "dbzq"
+        return "standalone"
 
     def login(self, user, password, exe_path, comm_password=None, **kwargs):
         """

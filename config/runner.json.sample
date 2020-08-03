@@ -1,5 +1,5 @@
 {
-"client": "dbzq_client",
+"client": "standalone",
 "user": "xxxx",
 "pass": "xxxx",
 "exe_path":"c:\xxxx",

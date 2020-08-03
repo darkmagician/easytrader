@@ -63,10 +63,10 @@ def use(broker, debug=False, **kwargs):
 
         return ClientTrader()
 
-    if broker.lower() in ["dbzq_client", "东北证券客户端"]:
-        from .dbzq_clienttrader import DBZQClientTrader
+    if broker.lower() in ["standalone", "同花顺独立证券客户端"]:
+        from .standalone_clienttrader import StandaloneClientTrader
 
-        return DBZQClientTrader()
+        return StandaloneClientTrader()
         
     raise NotImplementedError
 
