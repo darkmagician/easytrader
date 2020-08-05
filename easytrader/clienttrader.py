@@ -124,7 +124,7 @@ class ClientTrader(IClientTrader):
     @property
     def balance(self):
         self._switch_left_menus(["查询[F4]", "资金股票"])
-
+        self.refresh()
         return self._get_balance_from_statics()
 
     def _init_toolbar(self):
@@ -143,31 +143,31 @@ class ClientTrader(IClientTrader):
     @property
     def position(self):
         self._switch_left_menus(["查询[F4]", "资金股票"])
-
+        self.refresh()
         return self._get_grid_data(self._config.COMMON_GRID_CONTROL_ID)
 
     @property
     def today_entrusts(self):
         self._switch_left_menus(["查询[F4]", "当日委托"])
-
+        self.refresh()
         return self._get_grid_data(self._config.COMMON_GRID_CONTROL_ID)
 
     @property
     def today_trades(self):
         self._switch_left_menus(["查询[F4]", "当日成交"])
-
+        self.refresh()
         return self._get_grid_data(self._config.COMMON_GRID_CONTROL_ID)
 
     @property
     def cancel_entrusts(self):
-        self.refresh()
-        self._switch_left_menus(["撤单[F3]"])
 
+        self._switch_left_menus(["撤单[F3]"])
+        self.refresh()
         return self._get_grid_data(self._config.COMMON_GRID_CONTROL_ID)
 
     @perf_clock
     def cancel_entrust(self, entrust_no):
-        self.refresh()
+        # self.refresh()
         for i, entrust in enumerate(self.cancel_entrusts):
             if entrust[self._config.CANCEL_ENTRUST_ENTRUST_FIELD] == entrust_no:
                 self._cancel_entrust_by_double_click(i)
