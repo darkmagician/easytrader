@@ -28,7 +28,6 @@ def error_handle(func):
 
 
 def get_balance(req_data):
-    user.refresh()
     result = user.balance
     return {
         'available_cash': result['可用金额'],
@@ -37,7 +36,6 @@ def get_balance(req_data):
 
 
 def get_position(req_data):
-    user.refresh()
     result = user.position
     return {position['证券代码']: {
         'total_amount': position['股票余额'],
@@ -49,7 +47,6 @@ def get_position(req_data):
 
 
 def get_today_entrusts(req_data):
-    user.refresh()
     return [{
         'security': result['证券代码'],
         'add_time': result['委托时间'],
