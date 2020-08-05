@@ -21,6 +21,7 @@ def onOrderEvent(client, data):
     entrust_no = result['entrust_no']
     for i in range(100):
         time.sleep(3)
+        client.refresh()
         today_entrusts = client.today_entrusts
         entrust = next((x for x in today_entrusts if x['合同编号'] == entrust_no), None)
         if entrust:
@@ -39,6 +40,7 @@ def onOrderEvent(client, data):
 
 
 def onPortfolioEvent(client, data):
+    client.refresh()
     balance = client.balance
     logger.info(f'Get balance {balance}')
     positions = client.position
