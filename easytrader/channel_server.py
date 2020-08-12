@@ -4,7 +4,12 @@ import time
 logger = logging.getLogger(__name__)
 
 
-def onOrderEvent(client, data):
+client = None
+
+
+def onOrderEvent(data):
+    global client
+
     is_buy = data['is_buy']
     security = data['security']
     price = data['price']
@@ -38,7 +43,9 @@ def onOrderEvent(client, data):
     return {}
 
 
-def onPortfolioEvent(client, data):
+def onPortfolioEvent(data):
+    global client
+
     balance = client.balance
     logger.info(f'Get balance {balance}')
     positions = client.position
@@ -62,10 +69,10 @@ def onPortfolioEvent(client, data):
     return resp
 
 
-def run(client, cfg):
+def run(cfg):
     channel.initRoot(cfg['event_storage'])
-    channel.startHandlers({'orders': lambda x: onOrderEvent(client, x),
-                           'portfolio': lambda x: onPortfolioEvent(client, x)})
+    channel.startHandlers({'orders': lambda x: onOrderEvent(x),
+                           'portfolio': lambda x: onPortfolioEvent(x)})
     try:
         while True:
             time.sleep(300)

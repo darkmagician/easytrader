@@ -5,8 +5,9 @@ import logging
 import logging.handlers
 import os
 import sys
+import datetime
 from collections import defaultdict
-
+import sched
 
 rootDir = os.path.abspath(os.path.dirname(__file__))
 logger = logging.getLogger(__name__)
@@ -31,23 +32,36 @@ def getConfig(configName):
         return None
 
 
+scheduler = sched.scheduler(time.time, time.sleep)
+
+
+def restart_client(cfg, server):
+
+    if server.client:
+        logger.info('Restarting client ...')
+        server.client.exit()
+
+    client = easytrader.use(cfg['client'])
+    client.prepare(user=cfg['user'], password=cfg['pass'], exe_path=cfg['exe_path'])
+    server.client = client
+
+    target = datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=1), datetime.time(9, 10))
+    scheduler.enterabs(target.time(), 1, restart_client, argument=(cfg, server))
+
+
 def main():
     configLogging()
     cfg = getConfig('runner')
-    client = easytrader.use(cfg['client'])
-    client.prepare(user=cfg['user'], password=cfg['pass'], exe_path=cfg['exe_path'])
-    # print('balance: ' + str(client.balance))
-    # time.sleep(10)
-    # print('position: ' + str(client.position))
     impl = cfg['impl']
     if impl == 'channel':
         import easytrader.channel_server as server
-        server.run(client, cfg['channel'])
     elif impl == 'http':
         import easytrader.http_server as server
-        server.run(client, cfg['http'])
     else:
         logger.error(f'Unknown Impl {impl}')
+
+    restart_client(cfg, server)
+    server.run(cfg[impl])
 
 
 if __name__ == '__main__':

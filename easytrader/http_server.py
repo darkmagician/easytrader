@@ -9,7 +9,7 @@ import json
 
 app = Flask(__name__)
 
-user = None
+client = None
 txIdSeq = -1
 
 
@@ -28,7 +28,7 @@ def error_handle(func):
 
 
 def get_balance(req_data):
-    result = user.balance
+    result = client.balance
     return {
         'available_cash': result['可用金额'],
         'total_value': result['总资产']
@@ -36,7 +36,7 @@ def get_balance(req_data):
 
 
 def get_position(req_data):
-    result = user.position
+    result = client.position
     return {position['证券代码']: {
         'total_amount': position['股票余额'],
         'closeable_amount': position['可用余额'],
@@ -55,15 +55,15 @@ def get_today_entrusts(req_data):
         'amount': result['委托数量'],
         'success_amount': result['成交数量'],
         'is_buy': result['操作'] == '买入'
-    } for result in user.today_entrusts]
+    } for result in client.today_entrusts]
 
 
 def get_today_trades(req_data):
-    return user.today_trades
+    return client.today_trades
 
 
 def get_cancel_entrusts(req_data):
-    return user.cancel_entrusts
+    return client.cancel_entrusts
 
 
 def do_buy(req_data):
@@ -73,7 +73,7 @@ def do_buy(req_data):
         'amount': req_data['amount']
     }
 
-    return user.buy(**req_dict)
+    return client.buy(**req_dict)
 
 
 def do_sell(req_data):
@@ -83,11 +83,11 @@ def do_sell(req_data):
         'amount': req_data['amount']
     }
 
-    return user.sell(**req_dict)
+    return client.sell(**req_dict)
 
 
 def do_cancel_entrust(req_data):
-    return user.cancel_entrust(**req_data)
+    return client.cancel_entrust(**req_data)
 
 
 def get_txId(req_data):
@@ -150,11 +150,10 @@ def handle_request():
     return jsonify({"error": 'Unknown Operation'}), 404
 
 
-def run(client, cfg):
-    global user
+def run(cfg):
+
     global txIdSeq
 
-    user = client
     port = cfg['port']
     key = cfg.get('enc_key', None)
     if key:
