@@ -60,8 +60,8 @@ def onPortfolioEvent(data):
     for position in positions:
         security = position['证券代码']
         positions_dict[security] = {
-            'total_amount': position['股票余额'],
-            'closeable_amount': position['可用余额'],
+            'total_amount': position['可用余额'],
+            'closeable_amount': position['股票余额'],
             'security': security,
             'price': position['市价']
         }
