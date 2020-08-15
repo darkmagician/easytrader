@@ -8,6 +8,7 @@ import sys
 import datetime
 from collections import defaultdict
 import sched
+import threading
 
 rootDir = os.path.abspath(os.path.dirname(__file__))
 logger = logging.getLogger(__name__)
@@ -61,6 +62,8 @@ def main():
         logger.error(f'Unknown Impl {impl}')
 
     restart_client(cfg, server)
+
+    threading.Thread(target=scheduler.run, daemon=True).start()
     server.run(cfg[impl])
 
 
