@@ -47,7 +47,7 @@ def restart_client(cfg, server):
     server.client = client
 
     target = datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=1), datetime.time(9, 10))
-    scheduler.enterabs(target.time(), 1, restart_client, argument=(cfg, server))
+    scheduler.enterabs(target.timestamp(), 1, restart_client, argument=(cfg, server))
 
 
 def main():
