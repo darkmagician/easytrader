@@ -25,8 +25,8 @@ def onOrderEvent(data):
     logger.info(f'Order Result: {result}')
     entrust_no = result['entrust_no']
 
-    timeout = 300
-    interval = 5
+    timeout = 500
+    interval = 15
     while True:
         time.sleep(interval)
         timeout -= interval
