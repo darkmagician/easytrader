@@ -38,8 +38,8 @@ def get_balance(req_data):
 def get_position(req_data):
     result = client.position
     return {position['证券代码']: {
-        'total_amount': position['可用余额'],
-        'closeable_amount': position['股票余额'],
+        'total_amount': position['股票余额'],
+        'closeable_amount': position['可用余额'],
         'security': position['证券代码'],
         'price': position['市价']
     } for position in result

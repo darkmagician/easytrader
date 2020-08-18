@@ -24,8 +24,12 @@ def onOrderEvent(data):
         result = client.sell(security, price, amount)
     logger.info(f'Order Result: {result}')
     entrust_no = result['entrust_no']
-    for i in range(100):
-        time.sleep(3)
+
+    timeout = 300
+    interval = 5
+    while True:
+        time.sleep(interval)
+        timeout -= interval
         today_entrusts = client.today_entrusts
         entrust = next((x for x in today_entrusts if x['合同编号'] == entrust_no), None)
         if entrust:
@@ -40,7 +44,20 @@ def onOrderEvent(data):
                     'success_amount': entrust['成交数量'],
                     'is_buy': is_buy
                 }
-    return {}
+        if timeout < 0:
+            logger.info(f'entrust {entrust_no} is timeout for order {order_id}')
+            if entrust:
+                return {
+                    'security': entrust['证券代码'],
+                    'add_time': entrust['委托时间'],
+                    'entrust_no': entrust['合同编号'],
+                    'price': entrust['委托价格'],
+                    'amount': entrust['委托数量'],
+                    'success_amount': entrust['成交数量'],
+                    'is_buy': is_buy
+                }
+            else:
+                return {}
 
 
 def onPortfolioEvent(data):
@@ -60,8 +77,8 @@ def onPortfolioEvent(data):
     for position in positions:
         security = position['证券代码']
         positions_dict[security] = {
-            'total_amount': position['可用余额'],
-            'closeable_amount': position['股票余额'],
+            'total_amount': position['股票余额'],
+            'closeable_amount': position['可用余额'],
             'security': security,
             'price': position['市价']
         }
