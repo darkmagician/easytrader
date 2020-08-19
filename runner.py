@@ -41,7 +41,8 @@ def restart_client(cfg, server):
     if server.client:
         logger.info('Restarting client ...')
         server.client.exit()
-
+        time.sleep(60)
+    logger.info('Starting client ...')
     client = easytrader.use(cfg['client'])
     client.prepare(user=cfg['user'], password=cfg['pass'], exe_path=cfg['exe_path'])
     server.client = client
