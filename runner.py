@@ -51,6 +51,13 @@ def restart_client(cfg, server):
     scheduler.enterabs(target.timestamp(), 1, restart_client, argument=(cfg, server))
 
 
+def run_scheduler():
+    try:
+        scheduler.run()
+    except:
+        logger.exception('Scheduler Error: ')
+
+
 def main():
     configLogging()
     cfg = getConfig('runner')
@@ -64,7 +71,7 @@ def main():
 
     restart_client(cfg, server)
 
-    threading.Thread(target=scheduler.run, daemon=True).start()
+    threading.Thread(target=run_scheduler, daemon=True).start()
     server.run(cfg[impl])
 
 
