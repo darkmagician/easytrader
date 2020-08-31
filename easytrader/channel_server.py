@@ -1,6 +1,8 @@
 import easytrader.channel_communication as channel
 import logging
 import time
+import notification
+
 logger = logging.getLogger(__name__)
 
 
@@ -86,10 +88,22 @@ def onPortfolioEvent(data):
     return resp
 
 
+def defineHandler(func):
+    def handle(x):
+        try:
+            func(x)
+        except:
+            logger.exception('Channel Error: ')
+            message = traceback.format_exc()
+            # notify('Quant Error', message)
+            notification.sendMessage('Channel Error', 'error', {'err_message': message})
+    return handle
+
+
 def run(cfg):
     channel.initRoot(cfg['event_storage'])
-    channel.startHandlers({'orders': lambda x: onOrderEvent(x),
-                           'portfolio': lambda x: onPortfolioEvent(x)})
+    channel.startHandlers({'orders': defineHandler(onOrderEvent),
+                           'portfolio': defineHandler(onPortfolioEvent)})
     try:
         while True:
             time.sleep(300)
