@@ -91,12 +91,13 @@ def onPortfolioEvent(data):
 def defineHandler(func):
     def handle(x):
         try:
-            func(x)
+            return func(x)
         except:
             logger.exception('Channel Error: ')
             message = traceback.format_exc()
             # notify('Quant Error', message)
             notification.sendMessage('Channel Error', 'error', {'err_message': message})
+            return {"err_message", message}
     return handle
 
 
