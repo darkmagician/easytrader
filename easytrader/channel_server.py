@@ -2,6 +2,7 @@ import easytrader.channel_communication as channel
 import logging
 import time
 import notification
+import traceback
 
 logger = logging.getLogger(__name__)
 
