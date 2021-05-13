@@ -55,7 +55,16 @@ def createBody(templateName, message_ctx):
 
 def useHttpHook(subject, body, bodyType):
     cfg = notify_cfg['http']
-    r = requests.post(cfg['hook'], data={'text': subject, 'desp': body})
+    proxy = cfg['proxy']
+    if proxy:
+        proxies = {
+            'http': proxy,
+            'https': proxy,
+        }
+    else:
+        proxies = None
+
+    r = requests.post(cfg['hook'], proxies=proxies, data={'text': subject, 'desp': body})
     logger.info('HTTP Hook Resp ' + r.text)
 
 
