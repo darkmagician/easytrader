@@ -8,6 +8,7 @@ from easytrader.utils.perf import perf_clock
 from easytrader.utils.win_gui import SetForegroundWindow, ShowWindow, win32defines
 import logging
 
+
 class PopDialogHandler:
     def __init__(self, app):
         self._app = app
@@ -92,7 +93,10 @@ class TradePopDialogHandler(PopDialogHandler):
                 entrust_no = self._extract_entrust_id(content)
                 self._submit_by_click()
                 return {"entrust_no": entrust_no}
-
+            if "正在连接" in content:
+                logging.info("继续等待连接中 ...")
+                time.sleep(1)
+                return None
             self._submit_by_click()
             time.sleep(0.05)
             raise exceptions.TradeError(content)
