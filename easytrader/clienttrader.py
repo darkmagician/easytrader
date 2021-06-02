@@ -494,7 +494,10 @@ class ClientTrader(IClientTrader):
             try:
                 title = self._get_pop_dialog_title()
             except pywinauto.findwindows.ElementNotFoundError:
-                return {"message": "success"}
+                logging.info("no dialog found ...")
+                time.sleep(1)
+                continue
+                # return {"message": "success"}
 
             result = handler.handle(title)
             if result:
