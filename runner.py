@@ -31,6 +31,7 @@ def restart_client(cfg, server):
     server.client = client
 
     logger.info('Started client ...')
+    time.sleep(15)
     # test the client
     client.position
 
