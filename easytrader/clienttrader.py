@@ -123,8 +123,8 @@ class ClientTrader(IClientTrader):
 
     @property
     def balance(self):
-        self._switch_left_menus(["查询[F4]", "资金股票"])
         self.refresh()
+        self._switch_left_menus(["查询[F4]", "资金股票"])
         return self._get_balance_from_statics()
 
     def _init_toolbar(self):
@@ -142,27 +142,26 @@ class ClientTrader(IClientTrader):
 
     @property
     def position(self):
-        self._switch_left_menus(["查询[F4]", "资金股票"])
         self.refresh()
+        self._switch_left_menus(["查询[F4]", "资金股票"])
         return self._get_grid_data(self._config.COMMON_GRID_CONTROL_ID)
 
     @property
     def today_entrusts(self):
-        self._switch_left_menus(["查询[F4]", "当日委托"])
         self.refresh()
+        self._switch_left_menus(["查询[F4]", "当日委托"])
         return self._get_grid_data(self._config.COMMON_GRID_CONTROL_ID)
 
     @property
     def today_trades(self):
-        self._switch_left_menus(["查询[F4]", "当日成交"])
         self.refresh()
+        self._switch_left_menus(["查询[F4]", "当日成交"])
         return self._get_grid_data(self._config.COMMON_GRID_CONTROL_ID)
 
     @property
     def cancel_entrusts(self):
-
-        self._switch_left_menus(["撤单[F3]"])
         self.refresh()
+        self._switch_left_menus(["撤单[F3]"])
         return self._get_grid_data(self._config.COMMON_GRID_CONTROL_ID)
 
     @perf_clock
